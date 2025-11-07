@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planos Revenda</title>
+  <style>
+    body {
+      background-color: #0a0a0f;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    h1 {
+      color: #00ffff;
+      margin-bottom: 50px;
+      text-shadow: 0 0 15px #00ffff;
+      font-size: 2.4rem;
+    }
+    .planos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 60px;
+      margin-top: 40px;
+    }
+    .plano {
+      background: #111827;
+      padding: 40px;
+      border-radius: 20px;
+      width: 360px;
+      box-shadow: 0 0 25px rgba(0,255,255,0.2);
+      transition: 0.3s;
+    }
+    .plano:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 40px rgba(0,255,255,0.4);
+    }
+    .plano h3 {
+      color: #00ffff;
+      margin-bottom: 12px;
+      font-size: 1.6rem;
+    }
+    .plano p {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 25px;
+      line-height: 1.8;
+    }
+    .plano h2 {
+      color: #00ffcc;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+    }
+    .plano button {
+      width: 100%;
+      background: #00ffff;
+      color: #000;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .plano button:hover {
+      background: #00cccc;
+    }
+
+    /* Modal */
+    #pixModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .modal-content {
+      background: #111827;
+      padding: 35px;
+      border-radius: 20px;
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0,255,255,0.3);
+    }
+    .modal-content h2 {
+      color: #00ffff;
+      margin-bottom: 15px;
+    }
+    .modal-content img {
+      border: 2px solid #00ffff;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .modal-content textarea {
+      width: 100%;
+      height: 100px;
+      background: #000;
+      color: #0ff;
+      border: 1px solid #00ffff;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+    .modal-content button, .modal-content a {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .copy-btn {
+      background: #00ffff;
+      color: #000;
+    }
+    .copy-btn:hover {
+      background: #00cccc;
+    }
+    .whats-btn {
+      background: #25D366;
+      color: #fff;
+      text-decoration: none;
+    }
+    .whats-btn:hover {
+      background: #1ebe57;
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      color: #888;
+      font-size: 26px;
+      cursor: pointer;
+    }
+    .msg {
+      margin-top: 12px;
+      color: #00ff66;
+      display: none;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💎 Planos Para Revendedores</h1>
+
+  <div class="planos">
+    <div class="plano">
+      <h3>Plano Básico</h3>
+      <p>✔ Ideal para iniciantes<br>✔ Limite de 10 usuários<br>✔ Suporte via WhatsApp<br>✔ Renovação simples e automática</p>
+      <h2>R$ 40,00</h2>
+      <button onclick="abrirPix('40', 'Plano Básico')">COMPRAR</button>
+    </div>
+
+    <div class="plano">
+      <h3>Plano Intermediário</h3>
+      <p>✔ Limite de 20 usuários<br>✔ Mais performance e estabilidade<br>✔ Renovação simples e automática<br>✔ Ideal para revendedores ativos</p>
+      <h2>R$ 80,00</h2>
+      <button onclick="abrirPix('80', 'Plano Intermediário')">COMPRAR</button>
+    </div>
+
+    <div class="plano">
+      <h3>Plano Premium</h3>
+      <p>✔ Limite de 30 usuários<br>✔ Prioridade máxima no suporte<br>✔Renovação simples e automática<br>✔ Melhor custo-benefício para profissionais</p>
+      <h2>R$ 120,00</h2>
+      <button onclick="abrirPix('120', 'Plano Premium')">COMPRAR</button>
+  </div>
+
+  <!-- Modal PIX -->
+  <div id="pixModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="fecharPix()">&times;</span>
+      <h2 id="pixTitulo">Pagamento via PIX</h2>
+      <p>Escaneie o QR Code ou copie o código abaixo:</p>
+      <img id="pixQr" src="" width="220" height="220" alt="QR Code PIX">
+      <textarea id="pixCode" readonly></textarea>
+      <button class="copy-btn" onclick="copiarPix()">📋 COPIAR CÓDIGO PIX</button>
+      <a id="whatsLink" href="#" target="_blank" class="whats-btn" onclick="confirmarEnvio()">📩 ENVIAR COMPROVANTE NO WHATSAPP</a>
+      <p id="pixMsg" class="msg">✅ Código Pix copiado!</p>
+      <p id="confMsg" class="msg">✅ Aguardando comprovante no WhatsApp...</p>
+    </div>
+  </div>
+
+  <script>
+    const codigosPix = {
+      "40": "00020126460014br.gov.bcb.pix0124dede_sky2008@hotmail.com520489995303986540540.005802BR5925Renato Andre da Silva6015Sao Joao de Mer62290525PAGS0000040002511071838166304EA33",
+      "80": "00020126460014br.gov.bcb.pix0124dede_sky2008@hotmail.com520489995303986540580.005802BR5925Renato Andre da Silva6015Sao Joao de Mer62290525PAGS0000080002511071843416304D363",
+      "120": "00020126460014br.gov.bcb.pix0124dede_sky2008@hotmail.com5204899953039865406120.005802BR5925Renato Andre da Silva6015Sao Joao de Mer62290525PAGS00001200025110718445163049B5F"
+    };
+
+    function abrirPix(valor, plano) {
+      const codigo = codigosPix[valor];
+      const urlQR = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(codigo);
+      document.getElementById("pixQr").src = urlQR;
+      document.getElementById("pixCode").value = codigo;
+      document.getElementById("pixTitulo").innerText = `Pagamento via PIX - ${plano} (${valor} reais)`;
+
+      const mensagem = `Olá! Acabei de realizar o pagamento via PIX do ${plano} no valor de R$${valor},00. Segue o comprovante abaixo.`;
+      document.getElementById("whatsLink").href = `https://wa.me/5521972654357?text=${encodeURIComponent(mensagem)}`;
+
+      document.getElementById("pixModal").style.display = "flex";
+      document.getElementById("pixMsg").style.display = "none";
+      document.getElementById("confMsg").style.display = "none";
+    }
+
+    function fecharPix() {
+      document.getElementById("pixModal").style.display = "none";
+    }
+
+    function copiarPix() {
+      const pix = document.getElementById("pixCode");
+      pix.select();
+      navigator.clipboard.writeText(pix.value);
+      document.getElementById("pixMsg").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("pixMsg").style.display = "none";
+      }, 2000);
+    }
+
+    function confirmarEnvio() {
+      document.getElementById("confMsg").style.display = "block";
+      setTimeout(() => {
+        fecharPix();
+      }, 4000);
+    }
+  </script>
+
+</body>
+</html>
